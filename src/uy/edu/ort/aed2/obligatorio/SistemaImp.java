@@ -3,7 +3,7 @@ package uy.edu.ort.aed2.obligatorio;
 
 public class SistemaImp implements Sistema{
 
-    private int maxAeropuertos;
+    private int maxAeropuertos = 0;
 
 
     @Override
