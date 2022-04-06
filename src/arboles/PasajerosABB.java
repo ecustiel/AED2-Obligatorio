@@ -16,14 +16,33 @@ public class PasajerosABB {
     }
 
 
-    //Funcion para Comprobar validez de Cedula (Formato 4.549.685) sin verificador
-    public static boolean comprobarCi(String cedula){
+    //Funciones para Comprobar validez de Cedula (Formato 4.549.685-2)
+    //Tambien valida el digito despues del guion
+    public boolean validateCi(String cedula) {
+        String cleanCi = this.cleanCi(cedula);
+        char validationDigit = cleanCi.charAt(cleanCi.length() - 1);
 
-        Pattern patron = Pattern.compile("^[0-9][.][0-9]{3}[.][0-9]{3}$");
-        Matcher matcher = patron.matcher(cedula);
-
-        return matcher.matches();
+        return Character.getNumericValue(validationDigit) == this.validationDigit(cleanCi);
     }
+
+    public String cleanCi(String cedula) {
+        return cedula.replaceAll("[^0-9]", "");
+    }
+
+    protected Integer validationDigit(String cedula) {
+        String cleanCi = this.cleanCi(cedula);
+        int a = 0;
+        String baseNumber = "2987634";
+        String addZeros = String.format("%8s", cleanCi).replace(" ", "0");
+
+        for (int i = 0; i < baseNumber.length(); i++) {
+            int baseDigit = Character.getNumericValue(baseNumber.charAt(i));
+            int ciWithZeros = Character.getNumericValue(addZeros.charAt(i));
+            a += (baseDigit * ciWithZeros) % 10;
+        }
+        return a % 10 == 0 ? 0 : 10 - a % 10;
+    }
+
 
 
     //Insertar Pasajero
@@ -35,10 +54,10 @@ public class PasajerosABB {
     //Comprobar Si Existe y devolverlo, hacemos uso de la funcion pasajeroExiste
     public String buscarPasajero(String cedula){
 
-        if(comprobarCi(cedula)){
+        if(validateCi(cedula)){
             return pasajeroExiste(cedula, this.pasajeros);
         }else{
-            return "No Existe";
+            return "No Existe"; //Devuelvo no existe?
         }
 
     }
@@ -58,10 +77,11 @@ public class PasajerosABB {
 
 
     //Funcion para comprobar si el pasajero existe, devuelve los datos
+    //Preguntar si lo hago con toString
     private String pasajeroExiste(String cedula, NodoPasajero pas){
         String vacio;
         if(pas == null){
-            return vacio = "";
+            return vacio = ""; //consultar si estos esta bien
         }else{
             if(pas.getPasajero().getCedula().compareTo(cedula) == 0)
                 return pas.getPasajero().getCedula() + ";" + pas.getPasajero().getNombre() + ";"

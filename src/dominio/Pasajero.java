@@ -5,6 +5,8 @@ public class Pasajero {
     private String cedula;
     private String telefono;
 
+    //Categoria iria aca? clase nueva?
+
     public String getNombre() {
         return nombre;
     }
