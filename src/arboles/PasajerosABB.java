@@ -2,6 +2,8 @@ package arboles;
 
 //import org.jetbrains.annotations.NotNull;
 
+import uy.edu.ort.aed2.obligatorio.Sistema;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,15 +11,16 @@ public class PasajerosABB {
 
     //Data
     private NodoPasajero pasajeros;
+    private Sistema.Categoria cat;
 
     //Getter
     public NodoPasajero getPasajeros() {
         return pasajeros;
     }
 
-
     //Funciones para Comprobar validez de Cedula (Formato 4.549.685-2)
     //Tambien valida el digito despues del guion
+
     public boolean validateCi(String cedula) {
         String cleanCi = this.cleanCi(cedula);
         char validationDigit = cleanCi.charAt(cleanCi.length() - 1);
@@ -46,9 +49,12 @@ public class PasajerosABB {
 
 
     //Insertar Pasajero
-    //public String insertarPasajero(String cedula, String nombre, String telefrono, Categoria categoria) {
+   /* public String insertarPasajero(String cedula, String nombre, String telefrono, Sistema.Categoria categoria) {
 
-    //}
+        if(validateCi(cedula) && buscarPasajero(cedula)==null){
+
+        }
+    }*/
 
 
     //Comprobar Si Existe y devolverlo, hacemos uso de la funcion pasajeroExiste
@@ -57,7 +63,7 @@ public class PasajerosABB {
         if(validateCi(cedula)){
             return pasajeroExiste(cedula, this.pasajeros);
         }else{
-            return "No Existe"; //Devuelvo no existe?
+            return null; //Devuelvo no existe?
         }
 
     }
