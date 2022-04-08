@@ -2,6 +2,7 @@ package arboles;
 
 import org.junit.Test;
 import arboles.PasajerosABB;
+import uy.edu.ort.aed2.obligatorio.Sistema;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PasajerosABBTest {
 
     PasajerosABB pasaj = new PasajerosABB();
+    Sistema.Categoria cat;
 
 
     @Test
@@ -48,5 +50,17 @@ public class PasajerosABBTest {
         assertEquals(5, pasaj.validationDigit("6032655"));
         assertEquals(1, pasaj.validationDigit("251821"));
 
+    }
+
+    @Test
+    public void insertarPasajero() {
+        PasajerosABB nuevo = new PasajerosABB();
+        assertEquals("Insertado Correctamente Nuevo", nuevo.insertarPasajero("51211024","Eduardo", "1234567", Sistema.Categoria.A));
+        assertEquals("Insertado Correctamente en Nodo", nuevo.insertarPasajero("51211024","Eduardo", "1234567", Sistema.Categoria.A));
+        System.out.print("Terminado Exitosamente");
+    }
+
+    @Test
+    public void buscarPasajero() {
     }
 }

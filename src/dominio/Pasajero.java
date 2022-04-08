@@ -1,11 +1,13 @@
 package dominio;
 
+import uy.edu.ort.aed2.obligatorio.Sistema;
+
 public class Pasajero {
     private String nombre;
     private String cedula;
     private String telefono;
+    private Sistema.Categoria categoria;
 
-    //Categoria iria aca? clase nueva?
 
     public String getNombre() {
         return nombre;
@@ -17,6 +19,14 @@ public class Pasajero {
 
     public String getTelefono() {
         return telefono;
+    }
+
+    public Sistema.Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Sistema.Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public void setNombre(String nombre) {
@@ -31,11 +41,17 @@ public class Pasajero {
         this.telefono = telefono;
     }
 
-    public Pasajero(String nombre, String cedula, String telefono) {
+    public Pasajero(String cedula, String nombre, String telefono, Sistema.Categoria categoria) {
         this.nombre = nombre;
         this.cedula = cedula;
         this.telefono = telefono;
+        this.categoria = categoria;
     }
 
+    }
+//Categoria iria aca? clase nueva?
 
-}
+
+
+
+
