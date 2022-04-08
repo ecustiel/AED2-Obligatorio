@@ -59,10 +59,10 @@ public class PasajerosABB {
             return "Error3";*/
         }else if(this.raiz==null){
             this.raiz = new NodoPasajero(nombre, cedula, telefono, categoria);
-            return "Insertado Correctamente Nuevo";
+            return "Insertado Correcto";
         }else{
             insertarPasajero(cedula, nombre, telefono, categoria, this.raiz);
-            return "Insertado Correctamente en Nodo";
+            return "Insertado Correcto Nodo";
         }
     }
 

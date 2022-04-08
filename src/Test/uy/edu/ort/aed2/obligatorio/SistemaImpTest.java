@@ -1,5 +1,7 @@
 package uy.edu.ort.aed2.obligatorio;
 
+import arboles.NodoPasajero;
+import arboles.PasajerosABB;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,6 +12,7 @@ public class SistemaImpTest {
 
     private Retorno ret;
     private SistemaImp sistem;
+    private Sistema sis;
 
 
     @Before
@@ -25,6 +28,9 @@ public class SistemaImpTest {
 
     @Test
     public void registrarPasajero() {
+
+        assertEquals(Retorno.Resultado.OK, sistem.registrarPasajero("45496852", "Eduardo", "098616262", Sistema.Categoria.A).resultado);
+        assertEquals(Retorno.Resultado.ERROR_1, sistem.registrarPasajero(null, "Eduardo", "098616262", Sistema.Categoria.A).resultado);
     }
 
     @Test
