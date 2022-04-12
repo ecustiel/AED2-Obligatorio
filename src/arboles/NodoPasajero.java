@@ -1,9 +1,8 @@
 package arboles;
 
 import dominio.Pasajero;
-import uy.edu.ort.aed2.obligatorio.Sistema;
 
-public class NodoPasajero {
+public class NodoPasajero<T> {
 
 
     //private NodoPasajero pasaj;
@@ -12,13 +11,13 @@ public class NodoPasajero {
     private NodoPasajero der;
 
     //Constructor
-    public NodoPasajero(String nombre, String cedula, String telefono, Sistema.Categoria categoria){
+    public NodoPasajero(T nombre, T cedula, T telefono, T categoria){
         this.pasajero = new Pasajero(nombre, cedula, telefono, categoria);
         izq = null;
         der = null;
     }
 
-    public NodoPasajero(String nombre, String cedula, String telefono, Sistema.Categoria categoria, NodoPasajero i, NodoPasajero d){
+    public NodoPasajero(T nombre, T cedula, T telefono, T categoria, NodoPasajero i, NodoPasajero d){
         this.pasajero = new Pasajero(nombre, cedula, telefono, categoria);
         izq = i;
         der = d;
@@ -28,6 +27,8 @@ public class NodoPasajero {
     public Pasajero getPasajero() {
         return pasajero;
     }
+
+    public void setPasajero(Pasajero pasajero) { this.pasajero = pasajero;}
 
     public NodoPasajero getIzq() {
         return izq;

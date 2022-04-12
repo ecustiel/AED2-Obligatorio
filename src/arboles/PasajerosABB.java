@@ -2,17 +2,16 @@ package arboles;
 
 //import org.jetbrains.annotations.NotNull;
 
-import dominio.Pasajero;
 import uy.edu.ort.aed2.obligatorio.Sistema;
 
-public class PasajerosABB {
+public class PasajerosABB<T extends Comparable<T>> {
 
     //Data
-    private NodoPasajero raiz;
+    private NodoPasajero<T> raiz;
     private Sistema.Categoria cat;
 
     //Getter
-    public NodoPasajero getRaiz() {
+    public NodoPasajero<T> getRaiz() {
         return raiz;
     }
 
@@ -48,29 +47,29 @@ public class PasajerosABB {
 
     //Insertar Pasajero
     //Metodo Publico
-    public String insertarPasajero(String cedula, String nombre, String telefono, Sistema.Categoria categoria) {
+    public T insertarPasajero(T cedula, T nombre, T telefono, T categoria) {
 
         if(cedula == null || nombre == null || telefono ==  null || categoria == null) {
-            return "Error1";
+            return (T) "Error1";
 
-        }else if (!validateCi(cedula)) {
-            return "Error2";
-       /* }*//*else if (!buscarPasajero(cedula).equals("No Existe") ){
-            return "Error3";*/
+        }else if (!validateCi((String)cedula)) {
+            return (T) "Error2";
+        }else if (buscarPasajero(cedula).toString().compareTo("No Existe") != 0){
+            return (T)"Error3";
         }else if(this.raiz==null){
-            this.raiz = new NodoPasajero(nombre, cedula, telefono, categoria);
-            return "Insertado Correctamente Nuevo";
+            this.raiz = new NodoPasajero<T>(cedula, nombre, telefono, categoria);
+            return (T) "Insertado Correctamente Nuevo";
         }else{
             insertarPasajero(cedula, nombre, telefono, categoria, this.raiz);
-            return "Insertado Correctamente en Nodo";
+            return (T) "Insertado Correctamente en Nodo";
         }
     }
 
     //Metodo Privado
-    private NodoPasajero insertarPasajero(String cedula, String nombre, String telefono, Sistema.Categoria categoria, NodoPasajero pasajero){
-        NodoPasajero auxiliar = new NodoPasajero(cedula, nombre, telefono, categoria);
-        int cedulaConvertida = Integer.parseInt(cedula);
-        int cedulaAuxConvertida = Integer.parseInt(auxiliar.getPasajero().getCedula());
+    private NodoPasajero insertarPasajero(T cedula, T nombre, T telefono, T categoria, NodoPasajero pasajero){
+        NodoPasajero<T> auxiliar = new NodoPasajero<>(cedula, nombre, telefono, categoria);
+        int cedulaConvertida = Integer.parseInt((String)cedula);
+        int cedulaAuxConvertida = Integer.parseInt(auxiliar.getPasajero().getCedula().toString());
         if(pasajero == null){
             pasajero = auxiliar;
         }else if(cedulaConvertida < cedulaAuxConvertida){
@@ -84,9 +83,9 @@ public class PasajerosABB {
 
 
     //Comprobar Si Existe y devolverlo, hacemos uso de la funcion pasajeroExiste
-    public String buscarPasajero(String cedula){
-        String retorno = null;
-        if(validateCi(cedula)){
+    public T buscarPasajero(T cedula){
+        T retorno = null;
+        if(validateCi((String) cedula)){
              retorno = pasajeroExiste(cedula, this.raiz);
         }
     return retorno;
@@ -108,20 +107,36 @@ public class PasajerosABB {
 
     //Funcion para comprobar si el pasajero existe, devuelve los datos
     //Preguntar si lo hago con toString
-    private String pasajeroExiste(String cedula, NodoPasajero pas){
-        String valorRetorno;
+    private T pasajeroExiste(T cedula, NodoPasajero pas){
+        T valorRetorno;
+
         if(pas == null){
-            return "No Existe"; //consultar si estos esta bien
+            return (T) "No Existe"; //consultar si estos esta bien
         }else{
-            if(pas.getIzq().getPasajero().getCedula().compareTo(cedula) == 0)
-                 valorRetorno =  pas.getPasajero().getCedula() + ";" + pas.getPasajero().getNombre() + ";"
-                        + pas.getPasajero().getTelefono() + ";" ; //Falta Categoria
-            else if (pas.getPasajero().getCedula().compareTo(cedula) > 0) {
-                 valorRetorno =  pasajeroExiste(cedula, pas.getIzq());
+            if(pas.getPasajero().getCedula().toString().compareTo((String)cedula) == 0)
+                 valorRetorno = (T) (pas.getPasajero().getCedula() + ";" + pas.getPasajero().getNombre() + ";"
+                                         + pas.getPasajero().getTelefono() + ";" + pas.getPasajero().getCategoria());
+            else if (pas.getPasajero().getCedula().toString().compareTo((String)cedula) > 0) {
+                 return  pasajeroExiste(cedula, pas.getDer());
             } else
-                 valorRetorno = pasajeroExiste(cedula, pas.getDer());
+                 return pasajeroExiste(cedula, pas.getIzq());
         }
         return valorRetorno;
     }
 
+    /*private T pasajeroExiste(T cedula, NodoPasajero pas){
+        T valorRetorno;
+        if(pas == null){
+            return (T) "No Existe"; //consultar si estos esta bien
+        }else{
+            if(pas.getPasajero().getCedula().toString().compareTo((String)cedula) == 0)
+                valorRetorno = (T) (pas.getPasajero().getCedula() + ";" + pas.getPasajero().getNombre() + ";"
+                        + pas.getPasajero().getTelefono() + ";" + pas.getPasajero().getCategoria());
+            else if (pas.getPasajero().getCedula().toString().compareTo((String)cedula) > 0) {
+                return  pasajeroExiste(cedula, pas.getDer());
+            } else
+                return pasajeroExiste(cedula, pas.getIzq());
+        }
+        return valorRetorno;
+    }*/
 }

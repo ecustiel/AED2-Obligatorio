@@ -2,46 +2,46 @@ package dominio;
 
 import uy.edu.ort.aed2.obligatorio.Sistema;
 
-public class Pasajero {
-    private String nombre;
-    private String cedula;
-    private String telefono;
-    private Sistema.Categoria categoria;
+public class Pasajero<T> {
+    private T nombre;
+    private T cedula;
+    private T telefono;
+    private T categoria;
 
 
-    public String getNombre() {
+    public T getNombre() {
         return nombre;
     }
 
-    public String getCedula() {
+    public T getCedula() {
         return cedula;
     }
 
-    public String getTelefono() {
+    public T getTelefono() {
         return telefono;
     }
 
-    public Sistema.Categoria getCategoria() {
+    public T getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Sistema.Categoria categoria) {
+    public void setCategoria(T categoria) {
         this.categoria = categoria;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(T nombre) {
         this.nombre = nombre;
     }
 
-    public void setCedula(String cedula) {
+    public void setCedula(T cedula) {
         this.cedula = cedula;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(T telefono) {
         this.telefono = telefono;
     }
 
-    public Pasajero(String cedula, String nombre, String telefono, Sistema.Categoria categoria) {
+    public Pasajero(T cedula, T nombre, T telefono, T categoria) {
         this.nombre = nombre;
         this.cedula = cedula;
         this.telefono = telefono;
