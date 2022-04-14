@@ -1,12 +1,14 @@
 
 package uy.edu.ort.aed2.obligatorio;
 
+import arboles.NodoPasajero;
 import arboles.PasajerosABB;
+import dominio.Pasajero;
 
 public class SistemaImp implements Sistema{
 
     private int maxAeropuertos = 0;
-    PasajerosABB raiz;
+    private PasajerosABB raiz = new PasajerosABB();
 
 
     @Override
@@ -23,13 +25,15 @@ public class SistemaImp implements Sistema{
     @Override
     public Retorno registrarPasajero(String cedula, String nombre, String telefono, Categoria categoria) {
 
-        String retorno = raiz.insertarPasajero(cedula, nombre, telefono, categoria.A);
+        String retorno = raiz.insertarPasajero(cedula, nombre, telefono, categoria.A).toString();
 
         if(retorno.equals("Error1")){
             return new Retorno(Retorno.Resultado.ERROR_1);
-        }else if(retorno.equals("Error2")){
+        }else if(retorno.equals("Error2")) {
             return new Retorno(Retorno.Resultado.ERROR_2);
-        } else if (retorno.equals("Insertado Correcto") || retorno.equals("Insertado Correcto Nodo")) {
+        }else if(retorno.equals("Error3")) {
+            return new Retorno(Retorno.Resultado.ERROR_3);
+        } else if (retorno.equals("Insertado Correctamente Nuevo") || retorno.equals("Insertado Correctamente Nodo")) {
             return new Retorno(Retorno.Resultado.OK);
         }else{
             return new Retorno(Retorno.Resultado.OK);

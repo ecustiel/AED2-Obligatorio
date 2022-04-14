@@ -49,7 +49,6 @@ public class Pasajero<T> {
     }
 
     }
-//Categoria iria aca? clase nueva?
 
 
 

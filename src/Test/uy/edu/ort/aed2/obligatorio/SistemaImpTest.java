@@ -29,12 +29,16 @@ public class SistemaImpTest {
     @Test
     public void registrarPasajero() {
 
-        assertEquals(Retorno.Resultado.OK, sistem.registrarPasajero("45496852", "Eduardo", "098616262", Sistema.Categoria.A).resultado);
-        assertEquals(Retorno.Resultado.ERROR_1, sistem.registrarPasajero(null, "Eduardo", "098616262", Sistema.Categoria.A).resultado);
+        assertEquals(Retorno.Resultado.OK, sistem.registrarPasajero("4.549.685-2", "Eduardo", "098616262", Sistema.Categoria.A).resultado);
+        assertEquals(Retorno.Resultado.ERROR_1, sistem.registrarPasajero("", "Eduardo", "098616262", Sistema.Categoria.A).resultado);
+
     }
 
     @Test
     public void buscarPasajero() {
+
+
+
     }
 
     @Test

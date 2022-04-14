@@ -8,6 +8,7 @@ public class PasajerosABB<T extends Comparable<T>> {
 
     //Data
     private NodoPasajero<T> raiz;
+    public int contadorNodos = 0;
     private Sistema.Categoria cat;
 
     //Getter
@@ -26,6 +27,7 @@ public class PasajerosABB<T extends Comparable<T>> {
     }
 
     public String cleanCi(String cedula) {
+
         return cedula.replaceAll("[^0-9]", "");
     }
 
@@ -49,7 +51,8 @@ public class PasajerosABB<T extends Comparable<T>> {
     //Metodo Publico
     public T insertarPasajero(T cedula, T nombre, T telefono, T categoria) {
 
-        if(cedula == null || nombre == null || telefono ==  null || categoria == null) {
+        if(cedula == null || nombre == null || telefono ==  null || categoria == null || cedula == "" ||
+        nombre == "" || telefono == "" || categoria == "") {
             return (T) "Error1";
 
         }else if (!validateCi((String)cedula)) {
@@ -61,18 +64,16 @@ public class PasajerosABB<T extends Comparable<T>> {
             return (T) "Insertado Correctamente Nuevo";
         }else{
             insertarPasajero(cedula, nombre, telefono, categoria, this.raiz);
-            return (T) "Insertado Correctamente en Nodo";
+            return (T) "Insertado Correctamente Nodo";
         }
     }
-
     //Metodo Privado
     private NodoPasajero insertarPasajero(T cedula, T nombre, T telefono, T categoria, NodoPasajero pasajero){
         NodoPasajero<T> auxiliar = new NodoPasajero<>(cedula, nombre, telefono, categoria);
-        int cedulaConvertida = Integer.parseInt((String)cedula);
-        int cedulaAuxConvertida = Integer.parseInt(auxiliar.getPasajero().getCedula().toString());
+        int cedulaConvertida = Integer.parseInt(cleanCi((String)cedula));
         if(pasajero == null){
             pasajero = auxiliar;
-        }else if(cedulaConvertida < cedulaAuxConvertida){
+        }else if(cedulaConvertida < Integer.parseInt(cleanCi(pasajero.getPasajero().getCedula().toString()))){
             pasajero.setIzq(insertarPasajero(cedula, nombre, telefono, categoria, pasajero.getIzq()));
         }else{
             pasajero.setDer(insertarPasajero(cedula, nombre, telefono, categoria, pasajero.getDer()));
@@ -107,16 +108,20 @@ public class PasajerosABB<T extends Comparable<T>> {
 
     //Funcion para comprobar si el pasajero existe, devuelve los datos
     //Preguntar si lo hago con toString
+    //Tratar de optimizar, mucho texto
     private T pasajeroExiste(T cedula, NodoPasajero pas){
         T valorRetorno;
+        String cedulaNueva = (String)cedula;
 
         if(pas == null){
             return (T) "No Existe"; //consultar si estos esta bien
         }else{
-            if(pas.getPasajero().getCedula().toString().compareTo((String)cedula) == 0)
+            this.contadorNodos++;
+            String cedulaExistente = pas.getPasajero().getCedula().toString();
+            if(cedulaExistente.compareTo(cedulaNueva) == 0)
                  valorRetorno = (T) (pas.getPasajero().getCedula() + ";" + pas.getPasajero().getNombre() + ";"
                                          + pas.getPasajero().getTelefono() + ";" + pas.getPasajero().getCategoria());
-            else if (pas.getPasajero().getCedula().toString().compareTo((String)cedula) > 0) {
+            else if (cedulaExistente.compareTo(cedulaNueva) < 0) {
                  return  pasajeroExiste(cedula, pas.getDer());
             } else
                  return pasajeroExiste(cedula, pas.getIzq());
@@ -124,19 +129,5 @@ public class PasajerosABB<T extends Comparable<T>> {
         return valorRetorno;
     }
 
-    /*private T pasajeroExiste(T cedula, NodoPasajero pas){
-        T valorRetorno;
-        if(pas == null){
-            return (T) "No Existe"; //consultar si estos esta bien
-        }else{
-            if(pas.getPasajero().getCedula().toString().compareTo((String)cedula) == 0)
-                valorRetorno = (T) (pas.getPasajero().getCedula() + ";" + pas.getPasajero().getNombre() + ";"
-                        + pas.getPasajero().getTelefono() + ";" + pas.getPasajero().getCategoria());
-            else if (pas.getPasajero().getCedula().toString().compareTo((String)cedula) > 0) {
-                return  pasajeroExiste(cedula, pas.getDer());
-            } else
-                return pasajeroExiste(cedula, pas.getIzq());
-        }
-        return valorRetorno;
-    }*/
+
 }
