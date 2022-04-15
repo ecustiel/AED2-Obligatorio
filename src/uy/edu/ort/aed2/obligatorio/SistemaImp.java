@@ -5,7 +5,7 @@ import arboles.NodoPasajero;
 import arboles.PasajerosABB;
 import dominio.Pasajero;
 
-public class SistemaImp implements Sistema{
+public class SistemaImp<T> implements Sistema{
 
     private int maxAeropuertos = 0;
     private PasajerosABB raiz = new PasajerosABB();
@@ -44,7 +44,21 @@ public class SistemaImp implements Sistema{
 
     @Override
     public Retorno buscarPasajero(String cedula) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+
+        if(!raiz.validateCi(cedula)) {
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }else {
+            String resultado = raiz.buscarPasajero(cedula).toString();
+
+            if(resultado == null){
+                return new Retorno(Retorno.Resultado.ERROR_2);
+            }else{
+                return new Retorno(Retorno.Resultado.OK, raiz.contadorNodos, resultado);
+            }
+        }
+
+
+        //return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
     @Override

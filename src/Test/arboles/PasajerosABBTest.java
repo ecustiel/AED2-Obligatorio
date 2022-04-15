@@ -68,10 +68,11 @@ public class PasajerosABBTest {
     public void buscarPasajero() {
         PasajerosABB nuevo = new PasajerosABB();
         assertEquals("Insertado Correctamente Nuevo", nuevo.insertarPasajero("5.121.102-4","Eduardo", "1234567", Sistema.Categoria.A));
-        assertEquals("Insertado Correctamente en Nodo", nuevo.insertarPasajero("4.549.685-2","Eduardo", "1234567", Sistema.Categoria.A));
-        assertEquals("Insertado Correctamente en Nodo", nuevo.insertarPasajero("5.153.386-4","Gerardo", "1234567", Sistema.Categoria.A));
-        assertEquals("Insertado Correctamente en Nodo", nuevo.insertarPasajero("1.828.166-6","Federico", "098616262", Sistema.Categoria.B));
+        assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("4.549.685-2","Eduardo", "1234567", Sistema.Categoria.A));
+        assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("5.153.386-4","Gerardo", "1234567", Sistema.Categoria.A));
+        assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("1.828.166-6","Federico", "098616262", Sistema.Categoria.B));
 
         assertEquals("4.549.685-2;Eduardo;1234567;Platino", nuevo.buscarPasajero("4.549.685-2"));
+
     }
 }

@@ -54,7 +54,6 @@ public class PasajerosABB<T extends Comparable<T>> {
         if(cedula == null || nombre == null || telefono ==  null || categoria == null || cedula == "" ||
         nombre == "" || telefono == "" || categoria == "") {
             return (T) "Error1";
-
         }else if (!validateCi((String)cedula)) {
             return (T) "Error2";
         }else if (buscarPasajero(cedula).toString().compareTo("No Existe") != 0){

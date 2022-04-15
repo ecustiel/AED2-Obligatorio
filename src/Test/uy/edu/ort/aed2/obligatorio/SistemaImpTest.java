@@ -30,15 +30,19 @@ public class SistemaImpTest {
     public void registrarPasajero() {
 
         assertEquals(Retorno.Resultado.OK, sistem.registrarPasajero("4.549.685-2", "Eduardo", "098616262", Sistema.Categoria.A).resultado);
-        assertEquals(Retorno.Resultado.ERROR_1, sistem.registrarPasajero("", "Eduardo", "098616262", Sistema.Categoria.A).resultado);
-
+        assertEquals(Retorno.Resultado.ERROR_1, sistem.registrarPasajero("1.828.166-6", "Eduardo", "098616262", Sistema.Categoria.B).resultado);
+        assertEquals(Retorno.Resultado.ERROR_2, sistem.registrarPasajero("111233", "Jessica", "098772266", Sistema.Categoria.B).resultado);
+        assertEquals(Retorno.Resultado.ERROR_3, sistem.registrarPasajero("4.549.685-2", "Eduardo", "098616262", Sistema.Categoria.A).resultado);
     }
 
     @Test
     public void buscarPasajero() {
 
+        assertEquals(Retorno.Resultado.OK, sistem.registrarPasajero("4.549.685-2", "Eduardo", "098616262", Sistema.Categoria.A).resultado);
+        assertEquals(Retorno.Resultado.OK, sistem.registrarPasajero("1.828.166-6", "Lalo", "098616262", Sistema.Categoria.B).resultado);
+        assertEquals(Retorno.Resultado.OK, sistem.registrarPasajero("5.153.386-4", "Jessica", "098772266", Sistema.Categoria.C).resultado);
 
-
+        assertEquals(Retorno.Resultado.OK, sistem.buscarPasajero("4.549.685-2"));
     }
 
     @Test
