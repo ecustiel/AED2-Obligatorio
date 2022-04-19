@@ -55,13 +55,14 @@ public class PasajerosABBTest {
     @Test
     public void insertarPasajero() {
         PasajerosABB nuevo = new PasajerosABB();
-        assertEquals("Insertado Correctamente Nuevo", nuevo.insertarPasajero("51211024","Eduardo", "1234567", Sistema.Categoria.A));
-        assertEquals("Insertado Correctamente en Nodo", nuevo.insertarPasajero("4.549.685-2","Eduardo", "1234567", Sistema.Categoria.A));
-        assertEquals("Insertado Correctamente en Nodo", nuevo.insertarPasajero(null,"Gerardo", "1234567", Sistema.Categoria.A));
-        assertEquals("Insertado Correctamente en Nodo", nuevo.insertarPasajero("3.456.925-6","Claudia", "1234567", Sistema.Categoria.B));
+
+        System.out.println(nuevo.insertarPasajero("51211024","Federico", "1234567", Sistema.Categoria.A));
+        System.out.println(nuevo.insertarPasajero("4.549.685-2","Eduardo", "1234567", Sistema.Categoria.A));
+        System.out.println(nuevo.insertarPasajero("3.456.925-6","Claudia", "1234567", Sistema.Categoria.B));
+        System.out.println(nuevo.insertarPasajero("1.828.166-6","Lalo", "1234567", Sistema.Categoria.C));
 
 
-        System.out.print("Terminado Exitosamente");
+        System.out.println(nuevo.listarAscendente());
     }
 
     @Test
@@ -72,7 +73,30 @@ public class PasajerosABBTest {
         assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("5.153.386-4","Gerardo", "1234567", Sistema.Categoria.A));
         assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("1.828.166-6","Federico", "098616262", Sistema.Categoria.B));
 
-        assertEquals("4.549.685-2;Eduardo;1234567;Platino", nuevo.buscarPasajero("4.549.685-2"));
+        System.out.print(nuevo.buscarPasajero("4.549.685-2"));
 
+    }
+
+    @Test
+    public void listarAscendente() {
+        PasajerosABB nuevo = new PasajerosABB();
+        assertEquals("Insertado Correctamente Nuevo", nuevo.insertarPasajero("5.121.102-4","Eduardo", "1234567", Sistema.Categoria.A));
+        assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("4.549.685-2","Eduardo", "1234567", Sistema.Categoria.A));
+        assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("5.153.386-4","Gerardo", "1234567", Sistema.Categoria.A));
+        assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("1.828.166-6","Federico", "098616262", Sistema.Categoria.B));
+
+        System.out.print(nuevo.listarAscendente());
+    }
+
+    @Test
+    public void listaDescendente() {
+
+        PasajerosABB nuevo = new PasajerosABB();
+        assertEquals("Insertado Correctamente Nuevo", nuevo.insertarPasajero("5.121.102-4","Eduardo", "1234567", Sistema.Categoria.A));
+        assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("4.549.685-2","Eduardo", "1234567", Sistema.Categoria.A));
+        assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("5.153.386-4","Gerardo", "1234567", Sistema.Categoria.A));
+        assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("1.828.166-6","Federico", "098616262", Sistema.Categoria.B));
+
+        System.out.print(nuevo.listaDescendente());
     }
 }

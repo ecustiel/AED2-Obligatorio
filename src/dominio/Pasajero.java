@@ -48,6 +48,10 @@ public class Pasajero<T> {
         this.categoria = categoria;
     }
 
+    @Override
+    public String toString() {
+        return  cedula + ";" + nombre + ";" + telefono + ";" + categoria + "|";
+    }
     }
 
 
