@@ -18,15 +18,7 @@ public class PasajerosABBTest {
     Sistema.Categoria cat;
 
 
-    @Test
-    public void validateCi() {
 
-
-        assertTrue(pasaj.validateCi("1.095.871-8"));
-        assertTrue(pasaj.validateCi("6032655"));
-        assertFalse(pasaj.validateCi("6032652"));
-        assertFalse(pasaj.validateCi("17367033"));
-    }
 
     @Test
     public void cleanCi() {
@@ -42,15 +34,6 @@ public class PasajerosABBTest {
         assertEquals(expected, withLetters);
     }
 
-    @Test
-    public void validationDigit() {
-        assertEquals(8, pasaj.validationDigit("9.105.702-8"));
-        assertEquals(4, pasaj.validationDigit("918.596-4"));
-        assertEquals(6, pasaj.validationDigit("45022186"));
-        assertEquals(5, pasaj.validationDigit("6032655"));
-        assertEquals(1, pasaj.validationDigit("251821"));
-
-    }
 
     @Test
     public void insertarPasajero() {
@@ -60,7 +43,7 @@ public class PasajerosABBTest {
         System.out.println(nuevo.insertarPasajero("4.549.685-2","Eduardo", "1234567", Sistema.Categoria.A));
         System.out.println(nuevo.insertarPasajero("3.456.925-6","Claudia", "1234567", Sistema.Categoria.B));
         System.out.println(nuevo.insertarPasajero("1.828.166-6","Lalo", "1234567", Sistema.Categoria.C));
-
+        System.out.println(nuevo.insertarPasajero("121.102-4","Charlie", "1234567", Sistema.Categoria.C));
 
         System.out.println(nuevo.listarAscendente());
     }
@@ -73,6 +56,8 @@ public class PasajerosABBTest {
         assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("5.153.386-4","Gerardo", "1234567", Sistema.Categoria.A));
         assertEquals("Insertado Correctamente Nodo", nuevo.insertarPasajero("1.828.166-6","Federico", "098616262", Sistema.Categoria.B));
 
+        System.out.print(nuevo.buscarPasajero("4.549.685-2"));
+        System.out.print(nuevo.buscarPasajero("4.549.685-2"));
         System.out.print(nuevo.buscarPasajero("4.549.685-2"));
 
     }

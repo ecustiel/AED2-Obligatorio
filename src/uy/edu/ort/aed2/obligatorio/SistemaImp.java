@@ -5,10 +5,14 @@ import arboles.NodoPasajero;
 import arboles.PasajerosABB;
 import dominio.Pasajero;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 public class SistemaImp<T> implements Sistema{
 
     private int maxAeropuertos = 0;
     private PasajerosABB raiz = new PasajerosABB();
+    Pattern pattern = Pattern.compile("^[1-9]?.?[0-9]{3}.[0-9]{3}-[1-9]$");
 
 
     @Override
@@ -45,7 +49,9 @@ public class SistemaImp<T> implements Sistema{
     @Override
     public Retorno buscarPasajero(String cedula) {
 
-        if(!raiz.validateCi(cedula)) {
+        Matcher match = pattern.matcher(cedula);
+
+        if(!match.find()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }else {
             String resultado = raiz.buscarPasajero(cedula).toString();
