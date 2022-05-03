@@ -20,7 +20,7 @@ public class PasajerosABB<T extends Comparable<T>> {
 
     //Funciones para Comprobar validez de Cedula (Formato 4.549.685-2)
 
-    Pattern pattern = Pattern.compile("^[1-9]?.?[0-9]{3}.[0-9]{3}-[1-9]$");
+    Pattern pattern = Pattern.compile("^(([1-9]\\.[0-9])|([1-9]))[0-9]{2}\\.[0-9]{3}-[0-9]$");
 
     public String cleanCi(String cedula) {
         return cedula.replaceAll("[^0-9]", "");
