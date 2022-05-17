@@ -157,4 +157,27 @@ public class PasajerosABB<T extends Comparable<T>> {
         }
     }
 
-}
+    //Lista Pasajeros por Categoria sin Orden
+    public String listarXCategoria(String categoria) {
+
+        if(arbolVacio()) {
+            return null;
+        }else{
+            listarXCategoriaSinOrden(this.raiz, categoria);
+        }
+        return enOrd.toString();
+    }
+
+    private void listarXCategoriaSinOrden(NodoPasajero pas, String categoria) {
+        if (pas != null) {
+                if(pas.getPasajero().getCategoria().toString().equals(categoria)){
+                    enOrd.append(pas.getPasajero().toString());
+                }
+                listarXCategoriaSinOrden(pas.getDer(), categoria);
+                listarXCategoriaSinOrden(pas.getIzq(), categoria);
+            }
+
+        }
+    }
+
+

@@ -69,17 +69,28 @@ public class SistemaImp<T> implements Sistema{
 
     @Override
     public Retorno listarPasajerosAscendente() {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+
+        String listaPasajeros = this.raiz.listarAscendente();
+        Retorno ret = new Retorno(Retorno.Resultado.OK);
+        ret.valorString = listaPasajeros;
+        return ret;
     }
 
     @Override
     public Retorno listarPasajerosDescendente() {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+
+        String listaPasajeros = this.raiz.listaDescendente();
+        Retorno ret = new Retorno(Retorno.Resultado.OK);
+        ret.valorString = listaPasajeros;
+        return ret;
     }
 
     @Override
     public Retorno listarPasajerosPorCategoría(Categoria categoria) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        String listaPasajeros = this.raiz.listarXCategoria(categoria.getTexto());
+        Retorno ret = new Retorno(Retorno.Resultado.OK);
+        ret.valorString = listaPasajeros;
+        return ret;
     }
 
     @Override
