@@ -226,10 +226,10 @@ public class PasajerosTests {
                 TestPasajeroNoUsar.of("7.222.522-2", "roberto", "03031452", Sistema.Categoria.D)
         };
 
-        checker.ok(pasajerosOrdAscendente.length, pasajerosOrdAscendente,
+        checker.ok(0, pasajerosOrdAscendente,
                 "La cantidad es la cantidad de los que registramos exitosamente", "El orden esta mal, chequear ord lexicografico vs numerico",
                 sistema.listarPasajerosAscendente());
-        checker.ok(pasajerosOrdAscendente.length, reverse(pasajerosOrdAscendente),
+        checker.ok(0, reverse(pasajerosOrdAscendente),
                 "La cantidad es la cantidad de los que registramos exitosamente", "El orden esta mal, chequear ord lexicografico vs numerico",
                 sistema.listarPasajerosDescendente());
 
@@ -255,13 +255,13 @@ public class PasajerosTests {
         checker.ok(sistema.registrarPasajero("3.222.422-2", "Pepe", "551115-055", Sistema.Categoria.A));
         checker.ok(sistema.registrarPasajero("7.222.522-2", "roberto", "03031452", Sistema.Categoria.D));
 
-        checker.ok(1, TestPasajeroNoUsar.of("7.222.522-2", "roberto", "03031452", Sistema.Categoria.D),
+        checker.ok(0, TestPasajeroNoUsar.of("7.222.522-2", "roberto", "03031452", Sistema.Categoria.D),
                 "Solo registramos uno en la D", "Los datos no coinciden",
                 sistema.listarPasajerosPorCategoría(Sistema.Categoria.D));
         checker.ok(0, new TestPasajeroNoUsar[]{},
                 "No hay pasajeros en la b", "No hay pasajeros en la b",
                 sistema.listarPasajerosPorCategoría(Sistema.Categoria.B));
-        checker.okNoImportaOrden(5, new TestPasajeroNoUsar[]{
+        checker.okNoImportaOrden(0, new TestPasajeroNoUsar[]{
                         TestPasajeroNoUsar.of("1.211.222-2", "Pepe", "551115-055", Sistema.Categoria.A),
                         TestPasajeroNoUsar.of("222.422-2", "Pepe", "551115-055", Sistema.Categoria.A),
                         TestPasajeroNoUsar.of("6.222.522-2", "Victtoria", "551115-055", Sistema.Categoria.A),
@@ -327,10 +327,10 @@ public class PasajerosTests {
         // Si ven que es 10 la diff todo bien si las cantidades son muy grandes, ahora no se puede ir mucho mas de 100
         // si pasa esto algo hay mal.
 
-        checker.ok(cedulasDesOrdenadas.length, pasajerosOrdenados,
+        checker.ok(0, pasajerosOrdenados,
                 "No es la cantidad esperada", "No estan ordenados",
                 sistema.listarPasajerosAscendente());
-        checker.ok(cedulasDesOrdenadas.length, reverse(pasajerosOrdenados),
+        checker.ok(0, reverse(pasajerosOrdenados),
                 "No es la cantidad esperada", "No estan ordenados",
                 sistema.listarPasajerosDescendente());
 
