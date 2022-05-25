@@ -4,6 +4,7 @@ package uy.edu.ort.aed2.obligatorio;
 import arboles.NodoPasajero;
 import arboles.PasajerosABB;
 import dominio.Pasajero;
+import grafos.GrafoVuelos;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -12,6 +13,7 @@ public class SistemaImp<T> implements Sistema{
 
     private int maxAeropuertos = 0;
     private PasajerosABB raiz = new PasajerosABB();
+    private GrafoVuelos grafo = new GrafoVuelos(5);
     Pattern pattern = Pattern.compile("^[1-9]?.?[0-9]{3}.[0-9]{3}-[1-9]$");
 
 
@@ -95,6 +97,17 @@ public class SistemaImp<T> implements Sistema{
 
     @Override
     public Retorno registrarAeropuerto(String codigo, String nombre) {
+
+        String retorno = grafo.agregarAeropuerto(codigo, nombre);
+        if(retorno.equals("Error 1")){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }else if(retorno.equals("Error 2")){
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }else if(retorno.equals("Error 3")){
+            return new Retorno(Retorno.Resultado.ERROR_3);
+        }else if(retorno.equals("Ok")){
+            return new Retorno(Retorno.Resultado.OK);
+        }
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
