@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import static uy.edu.ort.aed2.obligatorio.Retorno.Resultado.ERROR_1;
 
 /**
- * Clase para testear el metodo {@link SistemaImp#consultaDisponibilidad}
+ * Clase para testear el metodo {@link uy.edu.ort.aed2.obligatorio.SistemaImp#consultaDisponibilidad}
  */
 public class TestDisponibilidad {
     private static final int D = 0; // disponible

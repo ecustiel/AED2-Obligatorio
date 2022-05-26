@@ -6,7 +6,7 @@ import uy.edu.ort.aed2.obligatorio.Retorno;
 public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
     private Checker<TestAeropuertoNoUsar> checkerAeropuerto=new Checker<>(TestAeropuertoNoUsar::parsear);
     private static class InfoVuelo{
-        final double combustible;
+       final double combustible;
         final double costo;
         final double minutos;
 
@@ -68,7 +68,7 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
                                             int km,
                                             boolean bidireccional,
                                             InfoVuelo... vuelos
-    ) {
+                                            ) {
         registrarConexion(origen,destino,km);
 
 
@@ -94,9 +94,9 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
         checkerAeropuerto.ok(DISTANCIA_MVD_MADRID+DISTANCIA_MADRID_PARIS,
                 new TestAeropuertoNoUsar[]{montevideo,madrid,paris},
                 "Son 3 las escalas MVD->MADrid->Paris","El orden esta mal",
-                sistema.viajeCostoMinimoKilometros(
-                        montevideo.getCodigo()+"",
-                        paris.getCodigo()+""));
+        sistema.viajeCostoMinimoKilometros(
+                montevideo.getCodigo()+"",
+                paris.getCodigo()+""));
         checkerAeropuerto.ok(DISTANCIA_MVD_MADRID,
                 new TestAeropuertoNoUsar[]{montevideo,madrid},
                 "Son 2 las escalas MVD->Madrid","El orden esta mal",

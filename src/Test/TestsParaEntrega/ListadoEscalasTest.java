@@ -15,7 +15,7 @@ public class ListadoEscalasTest extends GrafoAeropuertosBaseTest {
         registrarConexion(buenosAires,madrid,9000);
         registrarConexion(montevideo,montevideo,9000);
 
-        checkerAeropuerto.ok(1,montevideo,
+        checkerAeropuerto.ok(0,montevideo,
         sistema.listadoAeropuertosCantDeEscalas(montevideo.getCodigo()+"",0));
 
     }
@@ -39,7 +39,7 @@ public class ListadoEscalasTest extends GrafoAeropuertosBaseTest {
         registrarConexion(buenosAires,madrid,9000);
 
 
-        checkerAeropuerto.ok(1,montevideo,
+        checkerAeropuerto.ok(0,montevideo,
                 sistema.listadoAeropuertosCantDeEscalas(montevideo.getCodigo()+"",0));
 
     }
@@ -52,7 +52,7 @@ public class ListadoEscalasTest extends GrafoAeropuertosBaseTest {
         registrarConexion(buenosAires,montevideo,1000);
         registrarConexion(buenosAires,madrid,9000);
         registrarConexion(montevideo,madrid,9000);
-        checkerAeropuerto.ok(3,new TestAeropuertoNoUsar[]{buenosAires,madrid,montevideo},
+        checkerAeropuerto.ok(0,new TestAeropuertoNoUsar[]{buenosAires,madrid,montevideo},
                 "2 son los adyaccentes + 1 qque es mdeo","Los aeropuertos no coinciden",
                 sistema.listadoAeropuertosCantDeEscalas(montevideo.getCodigo()+"",1));
     }
@@ -69,11 +69,11 @@ public class ListadoEscalasTest extends GrafoAeropuertosBaseTest {
         registrarConexion(buenosAires,santiagoDeChile,3000);
         registrarConexion(santiagoDeChile,rioDeJaneiro,9000);
 
-        checkerAeropuerto.ok(4,new TestAeropuertoNoUsar[]{buenosAires,madrid,montevideo,santiagoDeChile},
+        checkerAeropuerto.ok(0,new TestAeropuertoNoUsar[]{buenosAires,madrid,montevideo,santiagoDeChile},
                 "Son todos","Los aeropuertos no coinciden",
                 sistema.listadoAeropuertosCantDeEscalas(montevideo.getCodigo()+"",2));
 
-        checkerAeropuerto.ok(5,new TestAeropuertoNoUsar[]{buenosAires,madrid,montevideo,rioDeJaneiro,santiagoDeChile},
+        checkerAeropuerto.ok(0,new TestAeropuertoNoUsar[]{buenosAires,madrid,montevideo,rioDeJaneiro,santiagoDeChile},
                 "Son todos","Los aeropuertos no coinciden",
                 sistema.listadoAeropuertosCantDeEscalas(montevideo.getCodigo()+"",3));
     }

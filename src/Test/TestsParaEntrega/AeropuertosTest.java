@@ -1,7 +1,10 @@
 package TestsParaEntrega;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uy.edu.ort.aed2.obligatorio.Retorno;
+import uy.edu.ort.aed2.obligatorio.Sistema;
+import uy.edu.ort.aed2.obligatorio.SistemaImp;
 
 public class AeropuertosTest  extends GrafoAeropuertosBaseTest{
 
@@ -36,7 +39,7 @@ public class AeropuertosTest  extends GrafoAeropuertosBaseTest{
         checker.ok(registrarAeropuerto(paris));
         checker.ok(registrarAeropuerto(madrid));
         checker.ok(registrarAeropuerto(santiagoDeChile));
-        checker.ok(registrarAeropuerto(rioDeJaneiro));
+
         checker.error(Retorno.Resultado.ERROR_2, "El codigo es vacio",
                 registrarAeropuerto(new TestAeropuertoNoUsar("", "Un nombre")));
         checker.error(Retorno.Resultado.ERROR_2, "El nombre es null es vacio",
@@ -53,14 +56,13 @@ public class AeropuertosTest  extends GrafoAeropuertosBaseTest{
         checker.ok(registrarAeropuerto(paris));
         checker.ok(registrarAeropuerto(madrid));
         checker.ok(registrarAeropuerto(santiagoDeChile));
+
         checker.error(Retorno.Resultado.ERROR_3, "Lo registramos arriba",
                 registrarAeropuerto(montevideo));
-        checker.ok(registrarAeropuerto(rioDeJaneiro));
         checker.error(Retorno.Resultado.ERROR_3, "Lo registramos arriba",
                 registrarAeropuerto(paris));
 
     }
-
 
     @Test
     public void registrarConexion_ok(){
