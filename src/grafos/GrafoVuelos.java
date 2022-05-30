@@ -1,6 +1,8 @@
 package grafos;
 
 
+import dominio.ListaEnlazada;
+
 import java.util.Objects;
 
 public class GrafoVuelos {
@@ -33,10 +35,30 @@ public class GrafoVuelos {
         private int codDestino;
         private double kilometros;
         private Aeropuerto aeropuerto;
+        ListaEnlazada listaDeVuelos = new ListaEnlazada();
 
         public Conexion (int codOrigen, int codDestino) {
             this.codOrigen = codOrigen;
             this.codDestino = codDestino;
+        }
+    }
+
+    //Clase Vuelo
+    public class Vuelo {
+        private int codOrigen;
+        private int codDestino;
+        private String codVuelo;
+        private double combustible;
+        private double minutos;
+        private double costoEnDolares;
+
+        public Vuelo (int codOrigen, int codDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
+            this.codOrigen = codOrigen;
+            this.codDestino = codDestino;
+            this.codVuelo = codVuelo;
+            this.combustible = combustible;
+            this.minutos = minutos;
+            this.costoEnDolares = costoEnDolares;
         }
     }
 
@@ -96,6 +118,17 @@ public class GrafoVuelos {
         return -1;
     }
 
+    //Buscar si existe conexion entre 2 aeropuertos (Si se puede optimizar)
+    private boolean existe(String codOrigen, String codDestino){
+        Aeropuerto origen = this.buscarAeropuerto(codOrigen);
+        Aeropuerto destino = this.buscarAeropuerto(codDestino);
+
+        int idxOrigen = this.buscarIndiceAeropuerto(origen);
+        int idxDestino = this.buscarIndiceAeropuerto(destino);
+
+        return matrizConexiones[idxOrigen][idxDestino].existe;
+    }
+
 
     //Agregar Conexion (Tratar de optimizar si se puede)
     public String agregarConexion(String codAeropuertoOrigen, String codAeropuertoDestino, double kilometros){
@@ -125,7 +158,28 @@ public class GrafoVuelos {
 
         this.matrizConexiones[idxOrigen][idxDestino].existe=true;
         this.matrizConexiones[idxOrigen][idxDestino].kilometros=kilometros;
+
     }
 
+    public String agregarVuelo (String codOrigen, String codDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
+        Aeropuerto origen = this.buscarAeropuerto(codOrigen);
+        Aeropuerto destino = this.buscarAeropuerto(codDestino);
+
+        int idxOrigen = this.buscarIndiceAeropuerto(origen);
+        int idxDestino = this.buscarIndiceAeropuerto(destino);
+
+        this.agregarVuelo(idxOrigen, idxDestino, codVuelo, combustible, minutos, costoEnDolares );
+        return "Ok";
+    }
+
+    private void agregarVuelo(int idxOrigen, int idxDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
+
+        Vuelo vuelo = new Vuelo(idxOrigen, idxDestino,codVuelo,combustible,minutos,costoEnDolares);
+
+        if(this.matrizConexiones[idxOrigen][idxDestino].existe) {
+            this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.agregarInicio(vuelo);
+        }
+
+    }
 
 }
