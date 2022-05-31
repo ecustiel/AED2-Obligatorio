@@ -26,6 +26,11 @@ public class GrafoVuelos {
             Aeropuerto aeropuerto = (Aeropuerto) o;
             return Objects.equals(codigoAeropuerto, aeropuerto.codigoAeropuerto);
         }
+
+        @Override
+        public String toString() {
+            return  codigoAeropuerto + ";" + nombreAeropuerto ;
+        }
     }
 
     //Clase Conexion
@@ -35,7 +40,7 @@ public class GrafoVuelos {
         private int codDestino;
         private double kilometros;
         private Aeropuerto aeropuerto;
-        ListaEnlazada listaDeVuelos = new ListaEnlazada();
+        ListaEnlazada<Vuelo> listaDeVuelos = new ListaEnlazada();
 
         public Conexion (int codOrigen, int codDestino) {
             this.codOrigen = codOrigen;
@@ -65,20 +70,19 @@ public class GrafoVuelos {
             return codVuelo;
         }
 
-        //@Override
-        public boolean equals(String o) {
-            if (this.codVuelo.equals(o) ) return true;
-            return false;
-            //if (o == null || getClass() != o.getClass()) return false;
-           // Vuelo vuelo = Vuelo;
-            //return Objects.equals(codVuelo, vuelo.codVuelo);
-        }
+
     }
 
     private final Aeropuerto[] aeropuertos;
     private final Conexion[][] matrizConexiones;
     private int maxAeropuertos;
     private int largo;
+
+    public StringBuilder getEnOrd() {
+        return enOrd;
+    }
+
+    StringBuilder enOrd = new StringBuilder();
 
     public GrafoVuelos(int maxAeropuertos){
         this.maxAeropuertos = maxAeropuertos;
@@ -193,7 +197,7 @@ public class GrafoVuelos {
             return "Error 4";
         }else if(!this.matrizConexiones[idxOrigen][idxDestino].existe){
             return "Error 5";
-        }else if(this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.obtenerVuelo(codVuelo)){
+        }else if(buscarVuelo(codOrigen, codDestino, codVuelo) != null){
             return "Error 6";
         }else{
             this.agregarVuelo(idxOrigen, idxDestino, codVuelo, combustible, minutos, costoEnDolares );
@@ -207,14 +211,103 @@ public class GrafoVuelos {
 
         Vuelo vuelo = new Vuelo(idxOrigen, idxDestino,codVuelo,combustible,minutos,costoEnDolares);
 
+
         if(this.matrizConexiones[idxOrigen][idxDestino].existe && this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.esVacia()) {
             this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.agregarInicio(vuelo);
         }
 
     }
 
+    //Booleano que devuelve True si encuentra un vuelo con el mismo codigo de vuelo en la lista de la conexion
+    private Vuelo buscarVuelo(String codOrigen, String codDestino, String codVuelo) {
+        Aeropuerto origen = this.buscarAeropuerto(codOrigen);
+        Aeropuerto destino = this.buscarAeropuerto(codDestino);
+
+        int idxOrigen = this.buscarIndiceAeropuerto(origen);
+        int idxDestino = this.buscarIndiceAeropuerto(destino);
+
+        ListaEnlazada<Vuelo> list = this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos;
+
+        for(int i=0; i < list.getContador(); i++){
+            if(list.get(i).codVuelo.equals(codVuelo)){
+                return list.get(i);
+            }
+        }
+        return null;
+    }
+
+    //Funcion para actualizar vuelo (tratar de optimizar, mucho cidog repetido) No funciona bien la validacion del punto 6
+    public String actualizarVuelo (String codOrigen, String codDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
+        Aeropuerto origen = this.buscarAeropuerto(codOrigen);
+        Aeropuerto destino = this.buscarAeropuerto(codDestino);
+
+        int idxOrigen = this.buscarIndiceAeropuerto(origen);
+        int idxDestino = this.buscarIndiceAeropuerto(destino);
+
+        if(combustible <= 0 || minutos <= 0 || costoEnDolares <= 0 ) {
+            return "Error 1";
+        }else if(codOrigen == null || codOrigen.isEmpty() || codDestino == null || codDestino.isEmpty() || codVuelo == null || codVuelo.isEmpty()){
+            return "Error 2";
+        }else if(buscarAeropuerto(codOrigen) == null){
+            return "Error 3";
+        }else if(buscarAeropuerto(codDestino) == null){
+            return "Error 4";
+        }else if(!this.matrizConexiones[idxOrigen][idxDestino].existe){
+            return "Error 5";
+        }else if(buscarVuelo(codOrigen, codDestino, codVuelo) == null){
+            return "Error 6";
+        }else{
+            this.actualizarVueloRe(idxOrigen, idxDestino,codOrigen, codDestino, codVuelo, combustible, minutos, costoEnDolares );
+            return "Ok";
+        }
+
+    }
+
+
+    private void actualizarVueloRe(int idxOrigen, int idxDestino, String codOrigen, String codDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
+
+        Vuelo nuevoVuelo = new Vuelo(idxOrigen, idxDestino, codVuelo, combustible, minutos, costoEnDolares);
+        Vuelo vuelo = buscarVuelo(codOrigen, codDestino,codVuelo);
+        if(this.matrizConexiones[idxOrigen][idxDestino].existe && !this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.esVacia()) {
+            this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.eliminar(vuelo);
+            this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.agregarInicio(nuevoVuelo);
+
+        }
+
+    }
 
 
 
+    public String listadoAeropuertoCantDeEscalas(String codigoAeropuertoOrigen, int cantidad){
+
+        if(cantidad < 0 ) {
+            return "Error 1";
+        }else if(buscarAeropuerto(codigoAeropuertoOrigen) == null){
+            return "Error 2";
+        }else{
+            this.listadoAeropuertoCantDeEscalasRe(codigoAeropuertoOrigen, cantidad);
+            return String.valueOf(enOrd);
+            //return "Ok";
+        }
+    }
+
+    private ListaEnlazada<Aeropuerto> listadoAeropuertoCantDeEscalasRe(String codAeropuertoOrigen, int cantidad){
+       ListaEnlazada<Aeropuerto> escalas = new ListaEnlazada<>();
+        Aeropuerto aer = buscarAeropuerto(codAeropuertoOrigen);
+        int idxOrigen = buscarIndiceAeropuerto(aer);
+        for(int destino = 0; destino <= largo; destino++){
+            if(matrizConexiones[idxOrigen][destino].existe){
+                Conexion con = matrizConexiones[idxOrigen][destino];
+                escalas.agregarInicio(aeropuertos[destino]);
+                enOrd.append(aeropuertos[destino]);
+                enOrd.append("|");
+
+            }
+
+        }
+        enOrd.append(aer);
+
+        return escalas;
+    }
 
 }

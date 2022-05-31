@@ -4,7 +4,13 @@ import java.util.Objects;
 
 public class ListaEnlazada<T> {
 
+
+
     private  Nodo inicio;
+    private Nodo fin;
+    public int contador = 0;
+
+
 
     private  class Nodo {
         private T dato;
@@ -20,26 +26,45 @@ public class ListaEnlazada<T> {
         }
     }
 
-    private Nodo fin;
+
 
 
     public void agregarInicio(T dato){
+        contador++;
         this.inicio=new Nodo(dato,inicio);
     }
 
     //Arreglar, esta mal
-    public boolean obtenerVuelo(T codVuelo){
+    public T obtenerVuelo(T vuelo){
         Nodo n = this.inicio;
         while (n !=null){
-            if(n.dato.equals(codVuelo)){
-                return true;
+            if(n.dato == vuelo){
+                return n.dato;
             }
 
             n=n.sig;
 
 
         }
-        return false;
+        return null;
+    }
+
+    public void eliminar(T vuelo){
+        Nodo n = this.inicio;
+        while (n !=null){
+            if(n.dato == vuelo){
+                n.dato = null;
+            }
+
+
+            n=n.sig;
+
+
+        }
+    }
+
+    public int getContador(){
+        return contador;
     }
 
    /* public T agregarAlFinal(T elementoNuevo) {
@@ -64,6 +89,22 @@ public class ListaEnlazada<T> {
         return inicio== null;
     }
 
+
+    public T get(int indice) {
+
+        Nodo list = inicio;
+        int cont = 0;
+
+        while(cont < indice){
+            list = list.sig;
+            cont++;
+        }
+
+        return list.dato;
+
+
+
+    }
     /*public void visitar(Visitor<T> visitor){
         Nodo n =inicio;
         while (n!=null){
