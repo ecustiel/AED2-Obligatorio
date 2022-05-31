@@ -131,6 +131,23 @@ public class SistemaImp<T> implements Sistema{
 
     @Override
     public Retorno registrarVuelo(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, double combustible, double minutos, double costoEnDolares) {
+        String retorno = grafo.agregarVuelo(codigoAeropuertoOrigen,codigoAeropuertoDestino,codigoDeVuelo,combustible,minutos, costoEnDolares);
+        if(retorno.equals("Error 1")){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }else if(retorno.equals("Error 2")){
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }else if(retorno.equals("Error 3")){
+            return new Retorno(Retorno.Resultado.ERROR_3);
+        }else if(retorno.equals("Error 4")) {
+            return new Retorno(Retorno.Resultado.ERROR_4);
+        }else if(retorno.equals("Error 5")) {
+            return new Retorno(Retorno.Resultado.ERROR_5);
+        }else if(retorno.equals("Error 6")){
+            return new Retorno(Retorno.Resultado.ERROR_6);
+        }else if(retorno.equals("Ok")){
+            return new Retorno(Retorno.Resultado.OK);
+        }
+
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 

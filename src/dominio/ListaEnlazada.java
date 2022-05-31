@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class ListaEnlazada<T> {
 
+    private  Nodo inicio;
+
     private  class Nodo {
         private T dato;
         private  Nodo sig;
@@ -12,24 +14,44 @@ public class ListaEnlazada<T> {
             this.dato = dato;
             this.sig = sig;
         }
+
+        public T getDato() {
+            return dato;
+        }
     }
-    private  Nodo inicio;
+
+    private Nodo fin;
 
 
     public void agregarInicio(T dato){
         this.inicio=new Nodo(dato,inicio);
     }
 
-    public  void listar(){
-        Nodo n =inicio;
-        while (n!=null){
-            System.out.printf("%s,",n.dato);
+    //Arreglar, esta mal
+    public boolean obtenerVuelo(T codVuelo){
+        Nodo n = this.inicio;
+        while (n !=null){
+            if(n.dato.equals(codVuelo)){
+                return true;
+            }
+
             n=n.sig;
 
 
         }
-        System.out.println();
+        return false;
     }
+
+   /* public T agregarAlFinal(T elementoNuevo) {
+
+
+        if(esVacia()) {
+            inicio = fin = new Nodo(elementoNuevo, inicio);
+        }else{
+            fin = fin.sig = new Nodo(elementoNuevo, fin);
+
+        }
+    }*/
 
     public T eliminarInicio() {
         Objects.requireNonNull(inicio);

@@ -60,6 +60,19 @@ public class GrafoVuelos {
             this.minutos = minutos;
             this.costoEnDolares = costoEnDolares;
         }
+
+        public String getCodVuelo() {
+            return codVuelo;
+        }
+
+        //@Override
+        public boolean equals(String o) {
+            if (this.codVuelo.equals(o) ) return true;
+            return false;
+            //if (o == null || getClass() != o.getClass()) return false;
+           // Vuelo vuelo = Vuelo;
+            //return Objects.equals(codVuelo, vuelo.codVuelo);
+        }
     }
 
     private final Aeropuerto[] aeropuertos;
@@ -118,7 +131,7 @@ public class GrafoVuelos {
         return -1;
     }
 
-    //Buscar si existe conexion entre 2 aeropuertos (Si se puede optimizar)
+    //Buscar si existe conexion entre 2 aeropuertos (Si se puede optimizar, faltan validaciones)
     private boolean existe(String codOrigen, String codDestino){
         Aeropuerto origen = this.buscarAeropuerto(codOrigen);
         Aeropuerto destino = this.buscarAeropuerto(codDestino);
@@ -130,7 +143,7 @@ public class GrafoVuelos {
     }
 
 
-    //Agregar Conexion (Tratar de optimizar si se puede)
+    //Agregar Conexion (Tratar de optimizar si se puede) Faltan Validaciones
     public String agregarConexion(String codAeropuertoOrigen, String codAeropuertoDestino, double kilometros){
 
         Aeropuerto origen = this.buscarAeropuerto(codAeropuertoOrigen);
@@ -154,6 +167,7 @@ public class GrafoVuelos {
 
     }
 
+    //Faltan Validaciones
     private void agregarConexion(int idxOrigen, int idxDestino, double kilometros) {
 
         this.matrizConexiones[idxOrigen][idxDestino].existe=true;
@@ -161,6 +175,7 @@ public class GrafoVuelos {
 
     }
 
+    //Agregar Vuelo (tratar de optimizar, faltan validaciones)
     public String agregarVuelo (String codOrigen, String codDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
         Aeropuerto origen = this.buscarAeropuerto(codOrigen);
         Aeropuerto destino = this.buscarAeropuerto(codDestino);
@@ -168,18 +183,38 @@ public class GrafoVuelos {
         int idxOrigen = this.buscarIndiceAeropuerto(origen);
         int idxDestino = this.buscarIndiceAeropuerto(destino);
 
-        this.agregarVuelo(idxOrigen, idxDestino, codVuelo, combustible, minutos, costoEnDolares );
-        return "Ok";
+        if(combustible <= 0 || minutos <= 0 || costoEnDolares <= 0 ) {
+            return "Error 1";
+        }else if(codOrigen == null || codOrigen.isEmpty() || codDestino == null || codDestino.isEmpty() || codVuelo == null || codVuelo.isEmpty()){
+            return "Error 2";
+        }else if(buscarAeropuerto(codOrigen) == null){
+            return "Error 3";
+        }else if(buscarAeropuerto(codDestino) == null){
+            return "Error 4";
+        }else if(!this.matrizConexiones[idxOrigen][idxDestino].existe){
+            return "Error 5";
+        }else if(this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.obtenerVuelo(codVuelo)){
+            return "Error 6";
+        }else{
+            this.agregarVuelo(idxOrigen, idxDestino, codVuelo, combustible, minutos, costoEnDolares );
+            return "Ok";
+        }
+
     }
 
+    //revisar si es necesario agregar al final
     private void agregarVuelo(int idxOrigen, int idxDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
 
         Vuelo vuelo = new Vuelo(idxOrigen, idxDestino,codVuelo,combustible,minutos,costoEnDolares);
 
-        if(this.matrizConexiones[idxOrigen][idxDestino].existe) {
+        if(this.matrizConexiones[idxOrigen][idxDestino].existe && this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.esVacia()) {
             this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.agregarInicio(vuelo);
         }
 
     }
+
+
+
+
 
 }
