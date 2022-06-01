@@ -3,12 +3,13 @@ package grafos;
 
 import dominio.ListaEnlazada;
 
+import java.util.Collections;
 import java.util.Objects;
 
 public class GrafoVuelos {
 
     //Clase Aeropuerto
-    private class Aeropuerto {
+    public class Aeropuerto {
         private String codigoAeropuerto;
         private String nombreAeropuerto;
         private boolean estado;
@@ -34,7 +35,7 @@ public class GrafoVuelos {
     }
 
     //Clase Conexion
-    private class Conexion {
+    public class Conexion {
         private boolean existe;
         private int codOrigen;
         private int codDestino;
@@ -83,6 +84,12 @@ public class GrafoVuelos {
     }
 
     StringBuilder enOrd = new StringBuilder();
+
+    public double getKilometrosRetorno() {
+        return kilometrosRetorno;
+    }
+
+    double kilometrosRetorno;
 
     public GrafoVuelos(int maxAeropuertos){
         this.maxAeropuertos = maxAeropuertos;
@@ -277,7 +284,8 @@ public class GrafoVuelos {
     }
 
 
-
+    //Listado de Aeroupuerto por cantidad de Escalas *Falta Terminar
+    //Falta Optimizar sobre tdoo en el return
     public String listadoAeropuertoCantDeEscalas(String codigoAeropuertoOrigen, int cantidad){
 
         if(cantidad < 0 ) {
@@ -309,5 +317,122 @@ public class GrafoVuelos {
 
         return escalas;
     }
+
+
+
+    //Viaje de costo minimo en kilometros
+    public String viajeCostoMinimoKilometros(String codigoAeropuertoOrigen, String codigoAeropuertoDestino){
+
+        Aeropuerto origen = this.buscarAeropuerto(codigoAeropuertoOrigen);
+        Aeropuerto destino = this.buscarAeropuerto(codigoAeropuertoDestino);
+
+        int idxOrigen = this.buscarIndiceAeropuerto(origen);
+        int idxDestino = this.buscarIndiceAeropuerto(destino);
+
+        if(codigoAeropuertoOrigen == null || codigoAeropuertoOrigen.isEmpty() || codigoAeropuertoDestino == null || codigoAeropuertoDestino.isEmpty()) {
+            return "Error 1";
+        }else if(matrizConexiones[idxOrigen][idxDestino].existe){
+            return "Error 2";
+        }else{
+            ListaEnlazada<Aeropuerto> lista = this.viajeCostoMinimoKilometrosRe(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+
+            return "Ok";
+
+        }
+
+
+    }
+
+
+    private ListaEnlazada<Aeropuerto> viajeCostoMinimoKilometrosRe(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
+        Aeropuerto origen = this.buscarAeropuerto(codigoAeropuertoOrigen);
+        Aeropuerto destino = this.buscarAeropuerto(codigoAeropuertoDestino);
+
+        int idxOrigen = this.buscarIndiceAeropuerto(origen);
+        int idxDestino = this.buscarIndiceAeropuerto(destino);
+        int [] padres = new int[maxAeropuertos];
+        double [] distancias = new double[maxAeropuertos];
+        boolean [] visitados = new boolean[maxAeropuertos];
+
+        for(int i=0; i < maxAeropuertos; i++){
+            padres[i] = -1;
+            distancias[i]= Double.MAX_VALUE;
+        }
+
+        padres[idxOrigen] = idxOrigen;
+        distancias[idxOrigen] = 0;
+        while(!esteTodoVisitado(visitados)) {//mientras hay algo en la frontera
+            int vActual = obtenerAeropuertoNoVisitadoDeMenorCoste(visitados, distancias);
+            if (distancias[vActual] < Double.MAX_VALUE) {
+                for (int idxAdyacente = 0; idxAdyacente < maxAeropuertos; idxAdyacente++) { //foreach de adyacentes
+                    if (matrizConexiones[vActual][idxAdyacente].existe) {
+                        double distanciaAAdyacenteDesdeActual = (matrizConexiones[vActual][idxAdyacente].kilometros) + distancias[vActual];
+
+                        if (distanciaAAdyacenteDesdeActual < distancias[idxAdyacente]) {
+                            distancias[idxAdyacente] = distanciaAAdyacenteDesdeActual;
+                            padres[idxAdyacente] = vActual;
+                            kilometrosRetorno = distanciaAAdyacenteDesdeActual;
+                        }
+                    }
+                }
+            }
+            visitados[vActual] = true;
+
+        }
+
+        //tabla quedo completa
+        ListaEnlazada<Aeropuerto> camino = reconstruirCamino(padres, idxOrigen, idxDestino);
+        return camino;
+    }
+
+
+
+
+    private int obtenerAeropuertoNoVisitadoDeMenorCoste(boolean[] visitados, double[] distancias) {
+
+        double minimo = Double.MAX_VALUE;
+        int idxMinimo = -1;
+
+        for (int i = 0; i < largo; i++){
+            if(distancias[i] <= minimo && !visitados[i]){
+                minimo = distancias[i];
+                idxMinimo = i;
+            }
+        }
+        return idxMinimo;
+    }
+
+
+    private boolean esteTodoVisitado(boolean[] visitados) {
+        for(int i=0; i < largo; i++){
+            if(!visitados[i]) return false;
+        }
+        return true;
+    }
+
+    private ListaEnlazada<Aeropuerto> reconstruirCamino(int[] padres, int idxOrigen, int idxDestino) {
+
+        ListaEnlazada<Aeropuerto> resultado = new ListaEnlazada<>();
+        if(padres[idxDestino]==-1){
+            return null;
+        }
+        int idxActual = idxDestino;
+        while(idxActual != idxOrigen){
+            resultado.agregarInicio(aeropuertos[idxActual]);
+            enOrd.append(aeropuertos[idxActual]);
+            enOrd.append("|");
+            idxActual = padres[idxActual];
+        }
+
+        resultado.agregarInicio(aeropuertos[idxOrigen]);
+
+        enOrd.append(aeropuertos[idxOrigen]);
+        enOrd.append("|");
+        enOrd.deleteCharAt(enOrd.length()-1);
+
+        return resultado;
+
+    }
+
 
 }

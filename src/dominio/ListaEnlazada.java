@@ -27,8 +27,6 @@ public class ListaEnlazada<T> {
     }
 
 
-
-
     public void agregarInicio(T dato){
         contador++;
         this.inicio=new Nodo(dato,inicio);
@@ -37,6 +35,7 @@ public class ListaEnlazada<T> {
     //Arreglar, esta mal
     public T obtenerVuelo(T vuelo){
         Nodo n = this.inicio;
+
         while (n !=null){
             if(n.dato == vuelo){
                 return n.dato;

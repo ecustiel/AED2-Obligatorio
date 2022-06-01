@@ -1,9 +1,8 @@
 
 package uy.edu.ort.aed2.obligatorio;
 
-import arboles.NodoPasajero;
 import arboles.PasajerosABB;
-import dominio.Pasajero;
+import dominio.ListaEnlazada;
 import grafos.GrafoVuelos;
 
 import java.util.regex.Pattern;
@@ -193,6 +192,21 @@ public class SistemaImp<T> implements Sistema{
 
     @Override
     public Retorno viajeCostoMinimoKilometros(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
+        String retorno =  grafo.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+        int valorEntero = (int) grafo.getKilometrosRetorno();
+        String valorString = String.valueOf(grafo.getEnOrd());
+        if(retorno.equals("Error 1")){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }else if(retorno.equals("Error 2")) {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }else if(retorno.equals("Ok")){
+            Retorno ret = new Retorno(Retorno.Resultado.OK, valorEntero, valorString);
+            ret.valorString = valorString;
+            ret.valorEntero = valorEntero;
+            return ret;
+            //return new Retorno(Retorno.Resultado.OK);
+        }
+
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 

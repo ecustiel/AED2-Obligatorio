@@ -1,9 +1,11 @@
 package grafos;
 
-import grafos.GrafoVuelos;
+public  interface InterfazVariada {
 
-public interface InterfazVariada {
+    static double getCosto(double getCosto) //costo de Vuelo
+    {
+        return 0;
+    }
 
-    double getCosto(GrafoVuelos.Vuelo vuelo); //costo de Vuelo
 
 }
