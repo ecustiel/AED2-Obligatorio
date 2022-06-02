@@ -74,9 +74,10 @@ public class GrafoVuelos {
 
     }
 
+    //Listas y Variables de Retorno
     private final Aeropuerto[] aeropuertos;
     private final Conexion[][] matrizConexiones;
-    private int maxAeropuertos;
+    public int maxAeropuertos;
     private int largo;
 
     public StringBuilder getEnOrd() {
@@ -99,6 +100,7 @@ public class GrafoVuelos {
 
     double costoMinimoDolaresRetorno;
 
+    //Constructor GrafoVuelos
     public GrafoVuelos(int maxAeropuertos){
         this.maxAeropuertos = maxAeropuertos;
         this.aeropuertos=new Aeropuerto[maxAeropuertos];
@@ -112,14 +114,14 @@ public class GrafoVuelos {
         }
     }
 
-    //Agregando Aeropuerto
+    //Funcion para Agregar Aeropuertos
     public String agregarAeropuerto(String codigo, String nombre) {
-        if(largo==maxAeropuertos){
-            return "Error 1"; //Ya hay maximo de aeropuertos
+        if(largo>=maxAeropuertos){
+            return "Error 1";
         }else if(nombre == null || codigo == null || codigo.isEmpty() || nombre.isEmpty()){
-                return "Error 2"; //Codigo o nombres son vacios o null
+                return "Error 2";
         }else if(buscarAeropuerto(codigo) != null){
-            return "Error 3"; //Ya existe un aeropuerto con ese codigo
+            return "Error 3";
         }
         this.aeropuertos[largo]= new Aeropuerto(codigo, nombre);
         this.largo++;
@@ -152,24 +154,28 @@ public class GrafoVuelos {
 
     //Buscar si existe conexion entre 2 aeropuertos (Si se puede optimizar, faltan validaciones)
     private boolean existe(String codOrigen, String codDestino){
-        Aeropuerto origen = this.buscarAeropuerto(codOrigen);
-        Aeropuerto destino = this.buscarAeropuerto(codDestino);
 
-        int idxOrigen = this.buscarIndiceAeropuerto(origen);
-        int idxDestino = this.buscarIndiceAeropuerto(destino);
+        if(!codOrigen.isEmpty() && !codDestino.isEmpty()) {
+            Aeropuerto origen = this.buscarAeropuerto(codOrigen);
+            Aeropuerto destino = this.buscarAeropuerto(codDestino);
 
-        return matrizConexiones[idxOrigen][idxDestino].existe;
+            int idxOrigen = this.buscarIndiceAeropuerto(origen);
+            int idxDestino = this.buscarIndiceAeropuerto(destino);
+
+            return matrizConexiones[idxOrigen][idxDestino].existe;
+        }
+        return false;
     }
 
 
     //Agregar Conexion (Tratar de optimizar si se puede) Faltan Validaciones
     public String agregarConexion(String codAeropuertoOrigen, String codAeropuertoDestino, double kilometros){
 
-        Aeropuerto origen = this.buscarAeropuerto(codAeropuertoOrigen);
-        Aeropuerto destino = this.buscarAeropuerto(codAeropuertoDestino);
-
-        int idxOrigen = this.buscarIndiceAeropuerto(origen);
-        int idxDestino = this.buscarIndiceAeropuerto(destino);
+        //Funcion que se repite mucho a lo largo del codigo, pero no encontre forma de optimizarla
+            Aeropuerto origen = this.buscarAeropuerto(codAeropuertoOrigen);
+            Aeropuerto destino = this.buscarAeropuerto(codAeropuertoDestino);
+            int idxOrigen = this.buscarIndiceAeropuerto(origen);
+            int idxDestino = this.buscarIndiceAeropuerto(destino);
 
         if(kilometros <= 0){
             return "Error 1";
@@ -186,16 +192,18 @@ public class GrafoVuelos {
 
     }
 
-    //Faltan Validaciones
+    //Funcion privada para agregar conexion
     private void agregarConexion(int idxOrigen, int idxDestino, double kilometros) {
 
-        this.matrizConexiones[idxOrigen][idxDestino].existe=true;
-        this.matrizConexiones[idxOrigen][idxDestino].kilometros=kilometros;
-
+        if(idxOrigen>=0 && idxDestino >= 0 && kilometros >=0) {
+            this.matrizConexiones[idxOrigen][idxDestino].existe = true;
+            this.matrizConexiones[idxOrigen][idxDestino].kilometros = kilometros;
+        }
     }
 
     //Agregar Vuelo (tratar de optimizar, faltan validaciones)
     public String agregarVuelo (String codOrigen, String codDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
+
         Aeropuerto origen = this.buscarAeropuerto(codOrigen);
         Aeropuerto destino = this.buscarAeropuerto(codDestino);
 
@@ -221,23 +229,22 @@ public class GrafoVuelos {
 
     }
 
-    //revisar si es necesario agregar al final
+    //Funcion privada para agregar vuelo
     private void agregarVuelo(int idxOrigen, int idxDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
 
         Vuelo vuelo = new Vuelo(idxOrigen, idxDestino,codVuelo,combustible,minutos,costoEnDolares);
-
-
-        if(this.matrizConexiones[idxOrigen][idxDestino].existe && this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.esVacia()) {
+        if(this.matrizConexiones[idxOrigen][idxDestino].existe) {
             this.matrizConexiones[idxOrigen][idxDestino].listaDeVuelos.agregarInicio(vuelo);
         }
 
     }
 
-    //Booleano que devuelve True si encuentra un vuelo con el mismo codigo de vuelo en la lista de la conexion
+    //Funcion que devuelve el Vuelo a base de buscarlo por su codOrigen, codDestino y codVuelo
     private Vuelo buscarVuelo(String codOrigen, String codDestino, String codVuelo) {
+
+        //Funciones que se repiten a lo largo del codigo pero no encontre forma de optimizacion
         Aeropuerto origen = this.buscarAeropuerto(codOrigen);
         Aeropuerto destino = this.buscarAeropuerto(codDestino);
-
         int idxOrigen = this.buscarIndiceAeropuerto(origen);
         int idxDestino = this.buscarIndiceAeropuerto(destino);
 
@@ -251,11 +258,12 @@ public class GrafoVuelos {
         return null;
     }
 
-    //Funcion para actualizar vuelo (tratar de optimizar, mucho cidog repetido) No funciona bien la validacion del punto 6
+    //Funcion para actualizar vuelo
     public String actualizarVuelo (String codOrigen, String codDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
+
+        //Funciones que se repiten a lo largo del codigo pero no encontre forma de optimizacion
         Aeropuerto origen = this.buscarAeropuerto(codOrigen);
         Aeropuerto destino = this.buscarAeropuerto(codDestino);
-
         int idxOrigen = this.buscarIndiceAeropuerto(origen);
         int idxDestino = this.buscarIndiceAeropuerto(destino);
 
@@ -278,7 +286,7 @@ public class GrafoVuelos {
 
     }
 
-
+    //Funcion privada para actualizar vuelo
     private void actualizarVueloRe(int idxOrigen, int idxDestino, String codOrigen, String codDestino, String codVuelo, double combustible, double minutos, double costoEnDolares){
 
         Vuelo nuevoVuelo = new Vuelo(idxOrigen, idxDestino, codVuelo, combustible, minutos, costoEnDolares);
@@ -292,7 +300,7 @@ public class GrafoVuelos {
     }
 
 
-    //Listado de Aeroupuerto por cantidad de Escalas *Falta Terminar
+    //Listado de Aeroupuerto por cantidad de Escalas
     //Falta Optimizar sobre tdoo en el return
     public String listadoAeropuertoCantDeEscalas(String codigoAeropuertoOrigen, int cantidad){
 
@@ -307,6 +315,7 @@ public class GrafoVuelos {
         }
     }
 
+    //Funcion privada de aeropuerto por escala
     private ListaEnlazada<Aeropuerto> listadoAeropuertoCantDeEscalasRe(String codAeropuertoOrigen, int cantidad){
        ListaEnlazada<Aeropuerto> escalas = new ListaEnlazada<>();
         Aeropuerto aer = buscarAeropuerto(codAeropuertoOrigen);
@@ -329,26 +338,24 @@ public class GrafoVuelos {
 
 
     //Viaje de costo minimo en kilometros
+    //No funcionan correctamente, las implmente a ultimo momento
     public String viajeCostoMinimoKilometros(String codigoAeropuertoOrigen, String codigoAeropuertoDestino){
 
+        //Funciones que se repiten a lo largo del codigo pero no encontre forma de optimizacion
         Aeropuerto origen = this.buscarAeropuerto(codigoAeropuertoOrigen);
         Aeropuerto destino = this.buscarAeropuerto(codigoAeropuertoDestino);
-
         int idxOrigen = this.buscarIndiceAeropuerto(origen);
         int idxDestino = this.buscarIndiceAeropuerto(destino);
 
         if(codigoAeropuertoOrigen == null || codigoAeropuertoOrigen.isEmpty() || codigoAeropuertoDestino == null || codigoAeropuertoDestino.isEmpty()) {
             return "Error 1";
-        }else if(matrizConexiones[idxOrigen][idxDestino].existe){
+        }else if(!matrizConexiones[idxOrigen][idxDestino].existe){
             return "Error 2";
         }else{
-            ListaEnlazada<Aeropuerto> lista = this.viajeCostoMinimoKilometrosRe(codigoAeropuertoOrigen, codigoAeropuertoDestino);
-
+            this.viajeCostoMinimoKilometrosRe(codigoAeropuertoOrigen, codigoAeropuertoDestino);
             return "Ok";
 
         }
-
-
     }
 
 
@@ -369,10 +376,10 @@ public class GrafoVuelos {
 
         padres[idxOrigen] = idxOrigen;
         distancias[idxOrigen] = 0;
-        while(!esteTodoVisitado(visitados)) {//mientras hay algo en la frontera
+        while(!esteTodoVisitado(visitados)) {
             int vActual = obtenerAeropuertoNoVisitadoDeMenorCoste(visitados, distancias);
             if (distancias[vActual] < Double.MAX_VALUE) {
-                for (int idxAdyacente = 0; idxAdyacente < maxAeropuertos; idxAdyacente++) { //foreach de adyacentes
+                for (int idxAdyacente = 0; idxAdyacente < maxAeropuertos; idxAdyacente++) {
                     if (matrizConexiones[vActual][idxAdyacente].existe) {
                         double distanciaAAdyacenteDesdeActual = (matrizConexiones[vActual][idxAdyacente].kilometros) + distancias[vActual];
 
@@ -388,12 +395,9 @@ public class GrafoVuelos {
 
         }
 
-        //tabla quedo completa
         ListaEnlazada<Aeropuerto> camino = reconstruirCamino(padres, idxOrigen, idxDestino);
         return camino;
     }
-
-
 
 
     private int obtenerAeropuertoNoVisitadoDeMenorCoste(boolean[] visitados, double[] distancias) {
@@ -444,7 +448,8 @@ public class GrafoVuelos {
 
 
 
-    //Viaje de costo minimo en kilometros
+    //Viaje de costo minimo en dolares
+    //NO FUNCIONA CORRECTAMENTE, LAS IMPLEMENTE A ULTIMO MOMENTO
     public String viajeCostoMinimoDolares(String codigoAeropuertoOrigen, String codigoAeropuertoDestino){
 
         Aeropuerto origen = this.buscarAeropuerto(codigoAeropuertoOrigen);
@@ -458,13 +463,9 @@ public class GrafoVuelos {
         }else if(matrizConexiones[idxOrigen][idxDestino].existe){
             return "Error 2";
         }else{
-            ListaEnlazada<Aeropuerto> lista = this.viajeCostoMinimoDolaresRe(codigoAeropuertoOrigen, codigoAeropuertoDestino);
-
+            this.viajeCostoMinimoDolaresRe(codigoAeropuertoOrigen, codigoAeropuertoDestino);
             return "Ok";
-
         }
-
-
     }
 
     private ListaEnlazada<Aeropuerto> viajeCostoMinimoDolaresRe(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
@@ -490,12 +491,12 @@ public class GrafoVuelos {
                 for (int idxAdyacente = 0; idxAdyacente < largo; idxAdyacente++) { //foreach de adyacentes
 
                     if (matrizConexiones[vActual][idxAdyacente].existe && matrizConexiones[vActual][idxAdyacente].listaDeVuelos.get(vActual)!=null) {
-                        double distanciaAAdyacenteDesdeActual = (matrizConexiones[vActual][idxAdyacente].listaDeVuelos.get(vActual).costoEnDolares);
+                        double costoDolares = (matrizConexiones[vActual][idxAdyacente].listaDeVuelos.get(vActual).costoEnDolares);
 
 
-                        if (distanciaAAdyacenteDesdeActual < costoMinimo) {
-                            distancias[idxAdyacente] = distanciaAAdyacenteDesdeActual;
-                            costoMinimo = distanciaAAdyacenteDesdeActual;
+                        if (costoDolares < costoMinimo) {
+                            distancias[idxAdyacente] = costoDolares;
+                            costoMinimo = costoDolares;
                             padres[idxAdyacente] = vActual;
                             costoMinimoDolaresRetorno += costoMinimo;
                         }
@@ -507,7 +508,6 @@ public class GrafoVuelos {
 
         }
 
-        //tabla quedo completa
         ListaEnlazada<Aeropuerto> camino = reconstruirCamino(padres, idxOrigen, idxDestino);
         return camino;
     }

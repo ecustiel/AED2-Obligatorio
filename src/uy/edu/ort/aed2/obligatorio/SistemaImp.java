@@ -51,13 +51,19 @@ public class SistemaImp<T> implements Sistema{
     public Retorno buscarPasajero(String cedula) {
 
         Matcher match = pattern.matcher(cedula);
+        int contador = raiz.contadorNodos;
 
         if(!match.find()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }else {
-            String resultado = raiz.buscarPasajero(cedula).toString();
+            StringBuilder res = new StringBuilder();
+            res.append(raiz.buscarPasajero(cedula).toString());
+            res.deleteCharAt(res.length()-1);
+            String resultado = String.valueOf(res);
 
-            if(resultado == null){
+            //String resultado = raiz.buscarPasajero(cedula).toString();
+
+            if(resultado.isEmpty()){
                 return new Retorno(Retorno.Resultado.ERROR_2);
             }else{
                 return new Retorno(Retorno.Resultado.OK, raiz.contadorNodos, resultado);
@@ -72,16 +78,23 @@ public class SistemaImp<T> implements Sistema{
     public Retorno listarPasajerosAscendente() {
 
         String listaPasajeros = this.raiz.listarAscendente();
-        Retorno ret = new Retorno(Retorno.Resultado.OK);
-        ret.valorString = listaPasajeros;
-        return ret;
+        if(listaPasajeros == null){
+            listaPasajeros = "";
+        }
+            Retorno ret = new Retorno(Retorno.Resultado.OK, 0, listaPasajeros);
+            ret.valorString = listaPasajeros;
+            return ret;
+
     }
 
     @Override
     public Retorno listarPasajerosDescendente() {
 
         String listaPasajeros = this.raiz.listaDescendente();
-        Retorno ret = new Retorno(Retorno.Resultado.OK);
+        if(listaPasajeros == null){
+            listaPasajeros = "";
+        }
+        Retorno ret = new Retorno(Retorno.Resultado.OK, 0, listaPasajeros);
         ret.valorString = listaPasajeros;
         return ret;
     }
@@ -89,7 +102,10 @@ public class SistemaImp<T> implements Sistema{
     @Override
     public Retorno listarPasajerosPorCategoría(Categoria categoria) {
         String listaPasajeros = this.raiz.listarXCategoria(categoria.getTexto());
-        Retorno ret = new Retorno(Retorno.Resultado.OK);
+        if(listaPasajeros == null){
+            listaPasajeros = "";
+        }
+        Retorno ret = new Retorno(Retorno.Resultado.OK, 0, listaPasajeros);
         ret.valorString = listaPasajeros;
         return ret;
     }

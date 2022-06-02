@@ -5,21 +5,16 @@ package arboles;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class PasajerosABB<T extends Comparable<T>> {
+public class PasajerosABB<T> {
+
+    //ACLARACION: TIENE MUCHOS ERRORES QUE NO PUDE RESOLVER A ULTIMO MOMENTO
 
     //Data
     private NodoPasajero<T> raiz;
     public int contadorNodos = 0;
     StringBuilder enOrd = new StringBuilder(); //Para las listas ordenadas
 
-
-    //Getter
-    public NodoPasajero<T> getRaiz() {
-        return raiz;
-    }
-
     //Funciones para Comprobar validez de Cedula (Formato 4.549.685-2)
-
     Pattern pattern = Pattern.compile("^(([1-9]\\.[0-9])|([1-9]))[0-9]{2}\\.[0-9]{3}-[0-9]$");
 
     public String cleanCi(String cedula) {
@@ -27,25 +22,35 @@ public class PasajerosABB<T extends Comparable<T>> {
     }
 
 
+    public boolean isNull(T obj){
+        if(obj == null) return true;
+        return false;
+
+    }
+
     //Insertar Pasajero
     //Metodo Publico
     public T insertarPasajero(T cedula, T nombre, T telefono, T categoria) {
 
-        Matcher match = pattern.matcher((String)cedula);
+        if(!isNull(cedula)) {
+            Matcher match = pattern.matcher((String) cedula);
 
-        if (cedula == null || nombre == null || telefono == null || categoria == null || cedula == "" ||
-                nombre == "" || telefono == "" || categoria == "") {
+            if ( nombre == null || telefono == null || isNull(categoria) || cedula == "" ||
+                    nombre == "" || telefono == "" || categoria == "") {
+                return (T) "Error1";
+            } else if (!match.find()) {
+                return (T) "Error2";
+            } else if (buscarPasajero(cedula).toString().compareTo("No Existe") != 0) {
+                return (T) "Error3";
+            } else if (this.raiz == null) {
+                this.raiz = new NodoPasajero<T>(cedula, nombre, telefono, categoria);
+                return (T) "Insertado Correctamente Nuevo";
+            } else {
+                insertarPasajero(cedula, nombre, telefono, categoria, this.raiz);
+                return (T) "Insertado Correctamente Nodo";
+            }
+        }else {
             return (T) "Error1";
-        } else if (!match.find()) {
-            return (T) "Error2";
-        } else if (buscarPasajero(cedula).toString().compareTo("No Existe") != 0) {
-            return (T) "Error3";
-        } else if (this.raiz == null) {
-            this.raiz = new NodoPasajero<T>(cedula, nombre, telefono, categoria);
-            return (T) "Insertado Correctamente Nuevo";
-        } else {
-            insertarPasajero(cedula, nombre, telefono, categoria, this.raiz);
-            return (T) "Insertado Correctamente Nodo";
         }
     }
 
@@ -71,6 +76,7 @@ public class PasajerosABB<T extends Comparable<T>> {
         T retorno = null;
         Matcher match = pattern.matcher((String)cedula);
         if (match.find()) {
+            this.contadorNodos = 0;
             retorno = pasajeroExiste(cedula, this.raiz);
         }
         return retorno;
@@ -78,23 +84,27 @@ public class PasajerosABB<T extends Comparable<T>> {
 
 
     //Funcion para comprobar si el pasajero existe, devuelve los datos
-    //Tratar de optimizar, mucho texto
-    //Revisar de sobrescribir el equals como hizo el profesor en clase para la comparacion de igual
     private T pasajeroExiste(T cedula, NodoPasajero pas) {
         T valorRetorno;
         String cedulaNueva = (String) cedula;
 
+
         if (pas == null) {
-            return (T) "No Existe"; //consultar si estos esta bien
+            return (T) "No Existe";
         } else {
-            this.contadorNodos++;
+
             String cedulaExistente = pas.getPasajero().getCedula().toString();
-            if (cedulaExistente.compareTo(cedulaNueva) == 0)
+
+            if (cedulaExistente.compareTo(cedulaNueva) == 0) {
+                this.contadorNodos++;
                 valorRetorno = (T) pas.getPasajero().toString();
-            else if (cedulaExistente.compareTo(cedulaNueva) < 0) {
+            }else if (cedulaExistente.compareTo(cedulaNueva) < 0) {
+                this.contadorNodos++;
                 return pasajeroExiste(cedula, pas.getDer());
-            } else
+            } else {
+                this.contadorNodos++;
                 return pasajeroExiste(cedula, pas.getIzq());
+            }
         }
         return valorRetorno;
     }
@@ -126,6 +136,7 @@ public class PasajerosABB<T extends Comparable<T>> {
     }else{
         ordenAscendentePorCedula(this.raiz);
     }
+    enOrd.deleteCharAt(enOrd.length()-1);
     return enOrd.toString();
     }
 
@@ -146,6 +157,7 @@ public class PasajerosABB<T extends Comparable<T>> {
         }else{
             ordenDescendentePorCedula(this.raiz);
         }
+        enOrd.deleteCharAt(enOrd.length()-1);
         return enOrd.toString();
     }
 
@@ -165,11 +177,16 @@ public class PasajerosABB<T extends Comparable<T>> {
         }else{
             listarXCategoriaSinOrden(this.raiz, categoria);
         }
+        if(enOrd.isEmpty()){
+            enOrd.append("-");
+        }
+        enOrd.deleteCharAt(enOrd.length()-1);
         return enOrd.toString();
     }
 
     private void listarXCategoriaSinOrden(NodoPasajero pas, String categoria) {
         if (pas != null) {
+
                 if(pas.getPasajero().getCategoria().toString().equals(categoria)){
                     enOrd.append(pas.getPasajero().toString());
                 }

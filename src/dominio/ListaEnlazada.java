@@ -32,21 +32,7 @@ public class ListaEnlazada<T> {
         this.inicio=new Nodo(dato,inicio);
     }
 
-    //Arreglar, esta mal
-    public T obtenerVuelo(T vuelo){
-        Nodo n = this.inicio;
 
-        while (n !=null){
-            if(n.dato == vuelo){
-                return n.dato;
-            }
-
-            n=n.sig;
-
-
-        }
-        return null;
-    }
 
     public void eliminar(T vuelo){
         Nodo n = this.inicio;
@@ -66,16 +52,6 @@ public class ListaEnlazada<T> {
         return contador;
     }
 
-   /* public T agregarAlFinal(T elementoNuevo) {
-
-
-        if(esVacia()) {
-            inicio = fin = new Nodo(elementoNuevo, inicio);
-        }else{
-            fin = fin.sig = new Nodo(elementoNuevo, fin);
-
-        }
-    }*/
 
     public T eliminarInicio() {
         Objects.requireNonNull(inicio);
@@ -107,14 +83,6 @@ public class ListaEnlazada<T> {
         }
 
     }
-    /*public void visitar(Visitor<T> visitor){
-        Nodo n =inicio;
-        while (n!=null){
-            visitor.visitar(n.dato);
-            n=n.sig;
 
-
-        }
-    }*/
 
 }
