@@ -94,14 +94,17 @@ public class ListaEnlazada<T> {
         Nodo list = inicio;
         int cont = 0;
 
-        while(cont < indice){
-            list = list.sig;
-            cont++;
+        if(list == null){
+            return null;
+        }else {
+            while (cont < indice && list.sig != null) {
+
+                    list = list.sig;
+                    cont++;
+                }
+
+            return list.dato;
         }
-
-        return list.dato;
-
-
 
     }
     /*public void visitar(Visitor<T> visitor){

@@ -212,6 +212,21 @@ public class SistemaImp<T> implements Sistema{
 
     @Override
     public Retorno viajeCostoMinimoDolares(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
+        String retorno =  grafo.viajeCostoMinimoDolares(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+        int valorEntero = (int) grafo.getCostoMinimoDolaresRetorno();
+        String valorString = String.valueOf(grafo.getEnOrd());
+        if(retorno.equals("Error 1")){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }else if(retorno.equals("Error 2")) {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }else if(retorno.equals("Ok")){
+            Retorno ret = new Retorno(Retorno.Resultado.OK, valorEntero, valorString);
+            ret.valorString = valorString;
+            ret.valorEntero = valorEntero;
+            return ret;
+            //return new Retorno(Retorno.Resultado.OK);
+        }
+
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
